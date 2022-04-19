@@ -1,5 +1,6 @@
 package com.mercadolibre.mutantes.controller;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,20 +13,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mercadolibre.mutantes.models.ResponseMutant;
 import com.mercadolibre.mutantes.models.ResponseStats;
-import com.mercadolibre.mutantes.service.MutanteService;
+import com.mercadolibre.mutantes.service.MutantService;
 
 @RestController
 @RequestMapping("")
-public class MutantesController {
+public class MutantController {
 	
 	@Autowired
-	private MutanteService mutanteService;
+	private MutantService mutantService;
 	private ResponseMutant responseMutant;
 	private ResponseStats responseStats;
 
 	@PostMapping("/mutant")
 	public ResponseEntity<?> verificarAdn(@RequestParam String[] adn) {
-		responseMutant = mutanteService.isMutant(adn);
+		responseMutant = mutantService.isMutant(adn);
 		JSONObject resp = new JSONObject();
 		resp.put("mensaje", responseMutant.getMensaje());
 		
@@ -37,8 +38,8 @@ public class MutantesController {
 	}
 
 	@GetMapping("/stats")
-	public ResponseEntity<?> stats() {
-		responseStats = mutanteService.stats();
+	public ResponseEntity<?> stats(){
+		responseStats = mutantService.stats();
 		JSONObject resp = new JSONObject();
 		resp.put("count_mutant_dna", responseStats.getCount_mutant_dna());
 		resp.put("count_human_dna", responseStats.getCount_human_dna());

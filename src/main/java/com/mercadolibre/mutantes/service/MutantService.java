@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 import com.mercadolibre.mutantes.models.AdnsDTO;
 import com.mercadolibre.mutantes.models.ResponseMutant;
 import com.mercadolibre.mutantes.models.ResponseStats;
-import com.mercadolibre.mutantes.repositories.IAdns;
+import com.mercadolibre.mutantes.repositories.IAdnsRepository;
 
 @Service
-public class MutanteService {
+public class MutantService {
 
 	@Autowired
-	private IAdns adns;
+	private IAdnsRepository adns;
 	@Autowired
 	private Validate validate;
 	private ResponseMutant responseMutant;
@@ -47,15 +47,14 @@ public class MutanteService {
 
 	public ResponseStats stats() {
 		responseStats = new ResponseStats();
-		List<AdnsDTO> listStats;
-		listStats = adns.countByMutants(true);
+		Integer CountStats;
+		CountStats = adns.countByMutants();
+		if (CountStats != null)
+			responseStats.setCount_mutant_dna(CountStats);
 
-		if (listStats != null && !listStats.isEmpty())
-			responseStats.setCount_mutant_dna(listStats.size());
-
-		listStats = adns.countByMutants(false);
-		if (listStats != null && !listStats.isEmpty())
-			responseStats.setCount_human_dna(listStats.size());
+		CountStats = adns.countByHumans();
+		if (CountStats != null)
+			responseStats.setCount_human_dna(CountStats);
 
 		ratio(responseStats);
 

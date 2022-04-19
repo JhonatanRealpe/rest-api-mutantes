@@ -10,10 +10,13 @@ import org.springframework.stereotype.Repository;
 import com.mercadolibre.mutantes.models.AdnsDTO;
 
 @Repository
-public interface IAdns extends MongoRepository<AdnsDTO, String> {
+public interface IAdnsRepository extends MongoRepository<AdnsDTO, String> {
 
 	Optional<AdnsDTO> findByAdn(String[] adn);
 
-	@Query("{mutant : ?0}")
-	List<AdnsDTO> countByMutants(boolean isMutant);
+	@Query(value ="{mutant: true}", count=true)  
+	Integer countByMutants();
+	
+	@Query(value ="{mutant: false}", count=true)  
+	Integer countByHumans();
 }
