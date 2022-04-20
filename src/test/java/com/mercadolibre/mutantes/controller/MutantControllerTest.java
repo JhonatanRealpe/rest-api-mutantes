@@ -1,74 +1,75 @@
 package com.mercadolibre.mutantes.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.mutantes.models.ResponseMutant;
 import com.mercadolibre.mutantes.models.ResponseStats;
 import com.mercadolibre.mutantes.service.MutantService;
+import com.mercadolibre.mutantes.models.RequestMutant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableAutoConfiguration(exclude = {
-        DataSourceAutoConfiguration.class,
-        DataSourceTransactionManagerAutoConfiguration.class,
-        HibernateJpaAutoConfiguration.class
-})
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(controllers = MutantController.class)
 class MutantControllerTest {
 
-    private boolean isMutant = true;
-    private String mensaje = "ASASDASD";
-    private String[] adn = {"AGGG,CCGG,TGAT,GGAG"};
-    private ResponseMutant responseMutant;
-    private ResponseStats responseStats;
-    @MockBean
-    MutantService mutantService;
+    @Autowired
+    private MockMvc mockMvc;
 
-    //@Autowired
-    //private WebTestClient webTestClient; // Por dependencia falla
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @MockBean
+    private MutantService mutantService;
+
+    private ResponseMutant responseMutant;
+    private ResponseStats responseStatus;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         responseMutant = new ResponseMutant();
-        responseMutant.setMutant(isMutant);
-        responseMutant.setAdn(adn);
-        responseMutant.setMensaje(mensaje);
+        responseMutant.setMutant(false);
+        responseMutant.setAdn(new String[]{"ATGCGA,CAGTGC,TTATGT,AGAAGG,CAAAGA,TCACTG"});
+        responseMutant.setMensaje("xd");
 
-        //Mockito.when(mutantService.isMutant(Mockito.any())).thenReturn(responseMutant);
-
-        responseStats = new ResponseStats();
-        responseStats.setCount_mutant_dna(10);
-        responseStats.setCount_human_dna(20);
-        responseStats.setRatio(1.0);
-
-        Mockito.when(mutantService.stats()).thenReturn(responseStats);
+        responseStatus = new ResponseStats();
+        responseStatus.setCount_mutant_dna(2);
+        responseStatus.setCount_human_dna(4);
+        responseStatus.setRatio(0.5);
     }
 
     @Test
-    void verificarAdnTest() throws Exception{
-
+    public void testMutantEndpoint() throws Exception {
+        when(mutantService.isMutant(Mockito.any())).thenReturn(responseMutant);
+        RequestMutant requestMutant = new RequestMutant();
+        requestMutant.setDna(responseMutant.getAdn());
+        mockMvc.perform(post("/mutant")
+                        .content(objectMapper.writeValueAsString(requestMutant))
+                        .contentType("application/json"))
+                .andExpect(status().isForbidden());
     }
 
     @Test
-    void statsTests() {
-        /*webTestClient.get()
-                .uri("/stats")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .jsonPath("$.count_mutant_dna")
-                .isEqualTo("10");*/
+    public void testStatsEndpoint() throws Exception {
+        when(mutantService.stats()).thenReturn(responseStatus);
+        mockMvc.perform( MockMvcRequestBuilders
+                        .get("/stats")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
-
-
 }
