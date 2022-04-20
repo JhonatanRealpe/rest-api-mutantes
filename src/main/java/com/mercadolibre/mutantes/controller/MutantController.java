@@ -25,7 +25,7 @@ public class MutantController {
 	private ResponseStats responseStats;
 
 	@PostMapping("/mutant")
-	public ResponseEntity<?> verificarAdn(@RequestParam String[] adn) {
+	public ResponseEntity<?> mutant(@RequestParam String[] adn) {
 		responseMutant = mutantService.isMutant(adn);
 		JSONObject resp = new JSONObject();
 		resp.put("mensaje", responseMutant.getMensaje());
