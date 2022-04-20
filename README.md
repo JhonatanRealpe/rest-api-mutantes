@@ -2,10 +2,10 @@
 
 
 ## Perspectiva general
-Proyecto para detectar mutantes basándose en su secuencia de ADN. Guardando los ADN verificados en una base de datos no relacional mongodb
+* Proyecto para detectar mutantes basándose en su secuencia de ADN. Guardando los ADN verificados en una base de datos no relacional mongodb
 
 ## Pautas
-Compilar el proyecto localmente con un Id de java 
+* Compilar el proyecto localmente con un Id de java 
 
 1. Clonar este repositorio
 
@@ -15,7 +15,7 @@ Compilar el proyecto localmente con un Id de java
 
 ## El código fuente del proyecto esta desplegado en Heroku
 
-*Se encuentra alojado en la URL https://app-api-rest-mutantes.herokuapp.com/
+* Se encuentra alojado en la URL https://app-api-rest-mutantes.herokuapp.com/
 
 
 ## Servicio MongoDB alojado en la nube en AWS
