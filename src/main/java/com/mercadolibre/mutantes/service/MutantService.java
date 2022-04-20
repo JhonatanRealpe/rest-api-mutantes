@@ -18,6 +18,9 @@ public class MutantService {
 	private IAdnsRepository adns;
 	@Autowired
 	private Validate validate;
+
+	@Autowired
+	private MutantService mutantService;
 	private ResponseMutant responseMutant;
 	private AdnsDTO adnsDTO;
 	private ResponseStats responseStats;
@@ -27,18 +30,21 @@ public class MutantService {
 		responseMutant = validate.isValidate(adn);
 
 		if (responseMutant.getAdn() != null && !existAdn(responseMutant.getAdn())) {
-			adnsDTO = new AdnsDTO();
-			adnsDTO.setAdn(responseMutant.getAdn());
-			adnsDTO.setMutant(responseMutant.isMutant());
-			adns.save(adnsDTO);
+			save(responseMutant);
 		}
 
 		return responseMutant;
 	}
+	public AdnsDTO save (ResponseMutant responseMutant){
+		adnsDTO = new AdnsDTO();
+		adnsDTO.setAdn(responseMutant.getAdn());
+		adnsDTO.setMutant(responseMutant.isMutant());
+		return adns.save(adnsDTO);
+	}
 
 	public boolean existAdn(String[] adn) {
-		Optional<AdnsDTO> dd = adns.findByAdn(adn);
-		if (dd.isPresent()) {
+		Optional<AdnsDTO> listAdns = adns.findByAdn(adn);
+		if (listAdns.isPresent()) {
 			return true;
 		} else {
 			return false;

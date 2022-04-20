@@ -13,6 +13,9 @@ class ValidateTest {
     Validate validate = new Validate();
     ResponseMutant responseMutant;
     String[] matriz = {"ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCGA","TCACTG"};
+    String[] matrizInvalid = {"ATGCG","CAGTGC","TTATGT"};
+    String[] LetrasInvalid = {"ATG","CAG","TTZ"};
+    String[] matrizHuman = {"AGGG","CCGG","TGAT","GGAG"};
     boolean isMatriz;
     boolean isLetras;
     boolean isMutant;
@@ -22,6 +25,22 @@ class ValidateTest {
     void isValidate() {
         responseMutant = validate.isValidate(matriz);
         Assertions.assertTrue(responseMutant.isMutant());
+    }
+
+    @Test
+    void isValidateMatrizInvalid() {
+        responseMutant = validate.isValidate(matrizInvalid);
+        Assertions.assertFalse(responseMutant.isMutant());
+    }
+    @Test
+    void isValidateLetrasInvalid() {
+        responseMutant = validate.isValidate(LetrasInvalid);
+        Assertions.assertFalse(responseMutant.isMutant());
+    }
+    @Test
+    void isValidateIsMutant() {
+        responseMutant = validate.isValidate(matrizHuman);
+        Assertions.assertFalse(responseMutant.isMutant());
     }
 
     @Test
