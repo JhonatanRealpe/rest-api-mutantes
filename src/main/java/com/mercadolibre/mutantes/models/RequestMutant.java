@@ -2,13 +2,13 @@ package com.mercadolibre.mutantes.models;
 
 public class RequestMutant {
 
-    String[] adn;
+    String[] dna;
 
-    public String[] getAdn() {
-        return adn;
+    public String[] getDna() {
+        return dna;
     }
 
-    public void setAdn(String[] adn) {
-        this.adn = adn;
+    public void setDna(String[] dna) {
+        this.dna = dna;
     }
 }
