@@ -5,6 +5,7 @@ import com.mercadolibre.mutantes.models.ResponseMutant;
 import com.mercadolibre.mutantes.models.ResponseStats;
 import com.mercadolibre.mutantes.service.MutantService;
 import com.mercadolibre.mutantes.models.RequestMutant;
+import com.mercadolibre.mutantes.util.Constantes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,7 +44,7 @@ class MutantControllerTest {
     void setUp() {
         responseMutant = new ResponseMutant();
         responseMutant.setMutant(false);
-        responseMutant.setAdn(new String[]{"ATGCGA,CAGTGC,TTATGT,AGAAGG,CAAAGA,TCACTG"});
+        responseMutant.setAdn(Constantes.matrizMutant);
         responseMutant.setMensaje("xd");
 
         responseStatus = new ResponseStats();

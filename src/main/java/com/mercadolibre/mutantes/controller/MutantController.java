@@ -1,7 +1,6 @@
 package com.mercadolibre.mutantes.controller;
 
 import com.mercadolibre.mutantes.models.RequestMutant;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

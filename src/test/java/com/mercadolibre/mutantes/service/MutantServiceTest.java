@@ -4,6 +4,7 @@ import com.mercadolibre.mutantes.models.AdnsDTO;
 import com.mercadolibre.mutantes.models.ResponseMutant;
 import com.mercadolibre.mutantes.models.ResponseStats;
 import com.mercadolibre.mutantes.repositories.IAdnsRepository;
+import com.mercadolibre.mutantes.util.Constantes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,9 +20,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MutantServiceTest {
-    private boolean isMutant = true;
-    private String mensaje = "ADN de mutante!";
-    private String[] adn = {"ATGCGA,CAGTGC,TTATGT,AGAAGG,CCCCGA,TCACTG"};
     private ResponseMutant responseMutant;
     private ResponseStats responseStats;
     private AdnsDTO adnsDTO;
@@ -30,16 +28,16 @@ class MutantServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         responseMutant = new ResponseMutant();
-        responseMutant.setMutant(isMutant);
-        responseMutant.setAdn(adn);
-        responseMutant.setMensaje(mensaje);
+        responseMutant.setMutant(Constantes.isMutant);
+        responseMutant.setAdn(Constantes.matrizMutant);
+        responseMutant.setMensaje(Constantes.mensajeMutante);
 
         responseStats =  new ResponseStats();
         responseStats.setCount_human_dna(10);
         responseStats.setCount_mutant_dna(5);
 
         adnsDTO = new AdnsDTO();
-        adnsDTO.setAdn(adn);
+        adnsDTO.setAdn(Constantes.matrizMutant);
         adnsDTO.setMutant(true);
         adnsDTO.set_id("1");
     }
@@ -58,7 +56,7 @@ class MutantServiceTest {
         Mockito.when(validateService.isValidate(Mockito.any())).thenReturn(responseMutant);
         Mockito.when(adnsRepository.save(Mockito.any())).thenReturn(adnsDTO);
 
-        ResponseMutant myMutant = mutantService.isMutant(adn);
+        ResponseMutant myMutant = mutantService.isMutant(Constantes.matrizMutant);
 
         assertNotNull(myMutant.getMensaje());
         assertNotNull(myMutant);
@@ -69,7 +67,7 @@ class MutantServiceTest {
     @Test
     void exitAdn(){
         Mockito.when(adnsRepository.findByAdn(Mockito.any())).thenReturn(Optional.ofNullable(adnsDTO));
-        Boolean exist = mutantService.existAdn(adn);
+        Boolean exist = mutantService.existAdn(Constantes.matrizMutant);
         assertNotNull(adnsDTO.get_id());
         assertNotNull(adnsDTO.isMutant());
         assertNotNull(exist);

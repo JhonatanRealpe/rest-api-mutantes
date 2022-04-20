@@ -18,9 +18,6 @@ public class MutantService {
 	private IAdnsRepository adns;
 	@Autowired
 	private Validate validate;
-
-	@Autowired
-	private MutantService mutantService;
 	private ResponseMutant responseMutant;
 	private AdnsDTO adnsDTO;
 	private ResponseStats responseStats;

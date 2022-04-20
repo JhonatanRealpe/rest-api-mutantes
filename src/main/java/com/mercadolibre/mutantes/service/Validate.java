@@ -2,6 +2,7 @@ package com.mercadolibre.mutantes.service;
 
 import java.util.Arrays;
 
+import com.mercadolibre.mutantes.util.Constantes;
 import org.springframework.stereotype.Component;
 
 import com.mercadolibre.mutantes.models.ResponseMutant;
@@ -10,21 +11,19 @@ import com.mercadolibre.mutantes.models.ResponseMutant;
 public class Validate {
 
 	private ResponseMutant responseMutant = new ResponseMutant();
-	private String[] letrasValidas = { "A", "T", "C", "G" };
-
 	public ResponseMutant isValidate(String[] matriz) {
 		if (!isMatriz(matriz)) {
-			responseMutant.setMensaje("Matriz invalida, por favor verifique!");
+			responseMutant.setMensaje(Constantes.mensajeMatrizInvalid);
 			responseMutant.setMutant(false);
 		} else if (!isLetras(matriz)) {
-			responseMutant.setMensaje("Letras invalidas solo pueden ser: (A,T,C,G), por favor verifique!");
+			responseMutant.setMensaje(Constantes.mensajeLetrasInvalid);
 			responseMutant.setMutant(false);
 		} else if (!isMutant(convertAdnToMatriz(matriz))) {
-			responseMutant.setMensaje("ADN de humano!");
+			responseMutant.setMensaje(Constantes.mensajeHuman);
 			responseMutant.setMutant(false);
 			responseMutant.setAdn(matriz);
 		} else {
-			responseMutant.setMensaje("ADN de mutante!");
+			responseMutant.setMensaje(Constantes.mensajeMutante);
 			responseMutant.setMutant(true);
 			responseMutant.setAdn(matriz);
 		}
@@ -46,7 +45,7 @@ public class Validate {
 			String f = matriz[i];
 			String[] fila = f.split("");
 			for (int j = 0; j < fila.length; j++) {
-				boolean containsLetra = Arrays.stream(letrasValidas).anyMatch(fila[j].toUpperCase()::equals);
+				boolean containsLetra = Arrays.stream(Constantes.letrasValidas).anyMatch(fila[j].toUpperCase()::equals);
 				if (!containsLetra) {
 					return false;
 				}
