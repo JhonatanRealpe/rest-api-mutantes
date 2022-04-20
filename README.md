@@ -9,9 +9,9 @@ Compilar el proyecto localmente con un Id de java
 
 1. Clonar este repositorio
 
-2. Vaya al Id e importe el proyecto 
-3. Ejecute la clase MutantesApplication
-4. Una vez que se inicie la aplicación Java, en la url adicione /swagger donde encontraremos apidoc del proyecto.
+2. importar proyecto en su id preferido de java.
+3. Ejecute la clase MutantesApplication.java.
+4. Una vez que se inicie la aplicación Java, en la url adicione /swagger donde encontraremos apidoc del proyecto, donde podremos ejecutar de manera rapida y sencilla los servicios del proyecto.
 
 ## El código fuente del proyecto esta desplegado en Heroku
 
